@@ -11,8 +11,9 @@ let current=0;
 let answers=[];
 const total=questions.length;
 const progress=document.getElementById("progress");
+const qCount=document.getElementById("q-count");
 
-// Personality types logic
+// Personality types
 const personalityTypes=[
 {type:"The Explorer",desc:"Curious, open-minded, enjoys new experiences."},
 {type:"The Strategist",desc:"Analytical, organized, goal-oriented."},
@@ -21,8 +22,10 @@ const personalityTypes=[
 {type:"The Harmonizer",desc:"Empathetic, cooperative, people-oriented."}
 ];
 
+// Show question
 function showQuestion(){
 document.getElementById("question").innerText=`Q${current+1}. ${questions[current]}`;
+qCount.innerText=`Q${current+1} / ${total}`;
 let optionsDiv=document.getElementById("options");
 optionsDiv.innerHTML="";
 ["Strongly Agree","Agree","Neutral","Disagree","Strongly Disagree"].forEach((opt,i)=>{
@@ -34,6 +37,7 @@ optionsDiv.appendChild(btn);
 progress.style.width=`${Math.round((current/total)*100)}%`;
 }
 
+// Answer selection
 function answer(score){
 answers.push(score);
 current++;
@@ -42,13 +46,14 @@ else showResult();
 progress.style.width=`100%`;
 }
 
-// Calculate trait averages
+// Calculate trait average
 function avg(start,end){
 let total=0;
 for(let i=start;i<=end;i++){total+=answers[i-1];}
 return total/(end-start+1);
 }
 
+// Show result
 function showResult(){
 document.getElementById("quiz").style.display="none";
 document.getElementById("result").style.display="block";
@@ -59,6 +64,7 @@ let conscientiousness=avg(17,24);
 let neuroticism=avg(25,32);
 let openness=avg(33,44);
 
+// Radar chart
 new Chart(document.getElementById("chart"),{
 type:"radar",
 data:{
@@ -74,6 +80,11 @@ let typeIndex=Math.floor(Math.random()*personalityTypes.length);
 let type=personalityTypes[typeIndex];
 
 document.getElementById("summary").innerText=`You are "${type.type}": ${type.desc} You scored highest on ${["Extraversion","Agreeableness","Conscientiousness","Neuroticism","Openness"][[extraversion,agreeableness,conscientiousness,neuroticism,openness].indexOf(maxTrait)]}.`;
+
+// Share button ready (functionality can be added later)
+document.getElementById("shareBtn").onclick=()=>{
+alert("Share functionality coming soon!");
+}
 
 }
 
